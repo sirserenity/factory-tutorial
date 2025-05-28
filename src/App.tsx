@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { sendGreeting } from './backend';
-import './App.css';
+import { MessageCircle, RefreshCw } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
+import { Button } from './components/ui/button';
 
 function App() {
   // State for the greeting from Rust backend
@@ -28,33 +30,57 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Hello World</h1>
-      
-      <div className="card">
-        <p>
-          A simple Tauri app that demonstrates communication with the Rust backend.
-        </p>
-        
-        {/* Rust backend integration section */}
-        <div className="backend-section">
-          <h3>Message from Rust:</h3>
-          {isLoading ? (
-            <p>Loading greeting from Rust...</p>
-          ) : (
-            <p className="greeting">{greeting}</p>
-          )}
-          <div className="actions">
-            <button onClick={fetchGreeting} disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Refresh Greeting'}
-            </button>
-          </div>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md space-y-6">
+        <div className="flex items-center justify-center space-x-2">
+          <MessageCircle className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl font-bold">Hello World</h1>
         </div>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Tauri + React Demo</CardTitle>
+            <CardDescription>
+              A simple Tauri app that demonstrates communication with the Rust backend.
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Message from Rust:</h3>
+              {isLoading ? (
+                <p className="text-muted-foreground">Loading greeting from Rust...</p>
+              ) : (
+                <p className="rounded bg-muted p-3 font-medium">{greeting}</p>
+              )}
+            </div>
+          </CardContent>
+          
+          <CardFooter>
+            <Button 
+              onClick={fetchGreeting} 
+              disabled={isLoading}
+              className="w-full"
+            >
+              {isLoading ? (
+                <span className="flex items-center space-x-2">
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  <span>Loading...</span>
+                </span>
+              ) : (
+                <span className="flex items-center space-x-2">
+                  <RefreshCw className="h-4 w-4" />
+                  <span>Refresh Greeting</span>
+                </span>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+        
+        <p className="text-center text-sm text-muted-foreground">
+          Powered by Tauri, React, and TypeScript
+        </p>
       </div>
-      
-      <p className="footer">
-        Powered by Tauri, React, and TypeScript
-      </p>
     </div>
   );
 }
